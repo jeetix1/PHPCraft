@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </head>
 <body>
-    <h1>Welcome to PHP Minecraft 2D!</h1>
+    <h1>Welcome to PHPCraft 2D!</h1>
     <h2>Selected Block: <?php echo $_SESSION['selected']; ?></h2>
     <form method="post">
         <button name="action" value="none">None</button>
