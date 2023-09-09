@@ -1,0 +1,22 @@
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}
+
+.pulsing {
+    animation: pulse 2s infinite;
+    background-color: yellowgreen;
+}
+
+.table {
+    border-spacing: 0;
+}

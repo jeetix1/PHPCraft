@@ -22,6 +22,9 @@ if ($playerWorld === null) {
     $playerWorld = $playerData['world'];
 }
 
+$_SESSION['x'] = $playerData['x'];
+$_SESSION['y'] = $playerData['y'];
+
 if (isset($_GET['getCoords']) && $_GET['getCoords'] === 'true') {
     header('Content-Type: application/json');
     echo json_encode(['x' => $_SESSION['x'], 'y' => $_SESSION['y']]);
@@ -75,30 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <title>PHPCraft 2D!</title>
-    <style>
-        @keyframes pulse {
-            0% {
-                opacity: 0.5;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0.5;
-            }
-        }
-
-        .pulsing {
-            animation: pulse 2s infinite;
-            background-color: yellowgreen;
-        }
-
-        .table {
-            border-spacing: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
     <script>
         document.addEventListener('keydown', function (event) {
             let action;
@@ -196,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </ul>
     <h3>Tools</h3>
     <ul>
-        <li><a href="tools/worldphoto.php">World Photo</a></li>
+        <li><a href="tools/worldphoto.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
         <li><a href="tools/worldphoto.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
     </ul>
 </body>
