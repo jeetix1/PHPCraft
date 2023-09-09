@@ -4,8 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Get or set the username
+// Get or set the username and world
 $username = isset($_GET['username']) ? $_GET['username'] : 'defaultUser';
+$playerWorld = isset($_GET['world']) ? $_GET['world'] : null;
 $playerFile = "players/{$username}.txt";
 
 // Initialize or read player data
@@ -17,9 +18,9 @@ if (!file_exists($playerFile)) {
 }
 
 // Extract player info
-$playerWorld = $playerData['world'];
-$_SESSION['x'] = $playerData['x'];
-$_SESSION['y'] = $playerData['y'];
+if ($playerWorld === null) {
+    $playerWorld = $playerData['world'];
+}
 
 if (isset($_GET['getCoords']) && $_GET['getCoords'] === 'true') {
     header('Content-Type: application/json');
@@ -131,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         .then(data => {
                             const urlParams = new URLSearchParams(window.location.search);
                             const username = urlParams.get('username') || 'defaultUser';
-                            const world = urlParams.get('world') || 'worlds/world';  // Include the 'worlds' folder
+                            const world = urlParams.get('world') || 'defaultWorld';
                             const newURL = `?username=${username}&world=${world}&x=${data.x}&y=${data.y}`;
                             window.location.href = newURL;
                         });
@@ -143,11 +144,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <h1>Welcome to PHPCraft 2D!</h1>
-    <form method="get">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="<?php echo $username; ?>">
-        <button type="submit">Switch User</button>
-    </form>
     <form method="get">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="<?php echo $username; ?>">
@@ -184,6 +180,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         ?>
     </table>
+    <h3>Legend:</h3>
+    <ul>
+        <li>Grass: <span style="color:green;">🌱</span></li>
+        <li>Water: <span style="color:blue;">🌊</span></li>
+        <li>Stone: <span style="color:gray;">⛰️</span></li>
+        <li>Dirt: <span style="color:brown;">🌄</span></li>
+        <li>Player: <span style="color:yellowgreen;">😼</span></li>
+    </ul>
+    <h3>Instructions:</h3>
+    <ul>
+        <li>Use the arrow keys to move around the world.</li>
+        <li>Click on a block type to select it.</li>
+        <li>Click on a block in the world to place the selected block. You will keep placing selected block as you move until you cnage it.</li>
+    </ul>
+    <h3>Tools</h3>
+    <ul>
+        <li><a href="tools/worldphoto.php">World Photo</a></li>
+        <li><a href="tools/worldphoto.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
+    </ul>
 </body>
 
 </html>
