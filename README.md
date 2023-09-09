@@ -63,3 +63,6 @@ This project is as free as your spirit. Do whatever you want with it. Just don't
 ## Contributing
 
 Feel free to fork, clone, and create pull requests. Or just fork and forget it, like you do with your other weekend projects.
+
+## Screenshot
+![PHPCraft 2D](https://raw.githubusercontent.com/jeetix1/PHPCraft/main/img/PHPCraft_2D!_v1.0.0.png)
