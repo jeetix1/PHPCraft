@@ -13,6 +13,18 @@
             echo 'selected'; ?>>👾</option>
         <option value="🤖" <?php if ($playerData['emoji'] === '🤖')
             echo 'selected'; ?>>🤖</option>
+        <option value="👻" <?php if ($playerData['emoji'] === '👻')
+            echo 'selected'; ?>>👻</option>
+        <option value="🐶" <?php if ($playerData['emoji'] === '🐶')
+            echo 'selected'; ?>>🐶</option>
+        <option value="🦁" <?php if ($playerData['emoji'] === '🦁')
+            echo 'selected'; ?>>🦁</option>
+        <option value="🐯" <?php if ($playerData['emoji'] === '🐯')
+            echo 'selected'; ?>>🐯</option>
+        <option value="🐭" <?php if ($playerData['emoji'] === '🐭')
+            echo 'selected'; ?>>🐭</option>
+        <option value="🐸" <?php if ($playerData['emoji'] === '🐸')
+            echo 'selected'; ?>>🐸</option>
     </select>
     <label for="world">World:</label>
     <input type="text" id="world" name="world" value="<?php echo $playerWorld; ?>" autocomplete="off">
