@@ -84,6 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <h1>Welcome to PHPCraft 2D!</h1>
+    <pre>Move around with arrow keys. No fancy controllers required. Place blocks like grass, water, stone, and dirt. You're basically a god.</pre>
+    <h2>World Around You:</h2>
     <form method="get">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="<?php echo $username; ?>" autocomplete="off">
@@ -99,8 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="button" name="action" value="stone">Stone</button>
         <button type="button" name="action" value="dirt">Dirt</button>
     </form>
-
-    <h2>World Around You:</h2>
     <table>
         <?php
         $colors = ['grass' => 'green', 'water' => 'blue', 'stone' => 'gray', 'dirt' => 'brown', 'void' => 'black'];
@@ -121,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         ?>
     </table>
+    <pre>Coordinates: <?php echo $_SESSION['x'] . ', ' . $_SESSION['y']; ?> Selected Block: <?php echo $_SESSION['selected']; ?></pre>
     <h3>Legend:</h3>
     <ul>
         <li>Grass: <span style="color:green;">🌱</span></li>
