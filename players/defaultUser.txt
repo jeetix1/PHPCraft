@@ -1,1 +1,1 @@
-{"world":"world","x":null,"y":null}
+{"world":"defaultWorld","x":0,"y":0}
