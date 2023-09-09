@@ -60,6 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         animation: pulse 2s infinite;
         background-color: yellowgreen;
     }
+    .table {
+        border-spacing: 0;
+    }
     </style>
     <script>
     document.addEventListener('keydown', function(event) {
@@ -112,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button name="action" value="dirt">Dirt</button>
     </form>
     <h2>World Around You:</h2>
-    <table border="1">
+    <table>
         <?php
         $colors = ['grass' => 'green', 'water' => 'blue', 'stone' => 'gray', 'dirt' => 'brown', 'void' => 'black'];
         for ($i = $_SESSION['y'] - 10; $i <= $_SESSION['y'] + 10; $i++) {
