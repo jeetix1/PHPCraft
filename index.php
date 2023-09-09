@@ -96,8 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php include 'left.php'; ?>
         </div>
         <div class="grid-item2">
-            <h1>Welcome to PHPCraft 2D!</h1>
-            <pre>Move around with arrow keys. No fancy controllers required.<br>Place blocks like grass, water, stone, and dirt. You're basically a god.</pre>
             <?php include 'controls.php'; ?>
             <div class="grid-item2-table">
                 <table>

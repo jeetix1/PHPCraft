@@ -1,3 +1,5 @@
+<h1>Welcome to PHPCraft 2D!</h1>
+<pre>Move around with arrow keys. No fancy controllers required.<br>Place blocks like grass, water, stone, and dirt. You're basically a god.</pre>
 <h2>World Around You:</h2>
 <form method="get">
     <label for="username">User:</label>
