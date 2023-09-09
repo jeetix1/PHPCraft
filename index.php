@@ -79,66 +79,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>PHPCraft 2D!</title>
     <link rel="stylesheet" href="style.css">
-    <script>
-        document.addEventListener('keydown', function (event) {
-            let action;
-            if (event.keyCode === 37) action = 'left';
-            if (event.keyCode === 38) action = 'up';
-            if (event.keyCode === 39) action = 'right';
-            if (event.keyCode === 40) action = 'down';
 
-            if (action) {
-                handleAction(action);
-            }
-        });
-
-        document.querySelector('form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const action = formData.get('action');
-            handleAction(action, true);
-            document.querySelector('h2').textContent = 'Selected Block: ' + action;
-        });
-        function handleAction(action, isBlockChange = false) {
-            const form = new FormData();
-            form.append('action', action);
-            fetch('', {
-                method: 'POST',
-                body: form
-            }).then(() => {
-                if (!isBlockChange) {
-                    fetch('?getCoords=true')
-                        .then(response => response.json())
-                        .then(data => {
-                            const urlParams = new URLSearchParams(window.location.search);
-                            const username = urlParams.get('username') || 'defaultUser';
-                            const world = urlParams.get('world') || 'defaultWorld';
-                            const newURL = `?username=${username}&world=${world}&x=${data.x}&y=${data.y}`;
-                            window.location.href = newURL;
-                        });
-                }
-            });
-        }
-    </script>
 </head>
 
 <body>
     <h1>Welcome to PHPCraft 2D!</h1>
     <form method="get">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="<?php echo $username; ?>">
+        <input type="text" id="username" name="username" value="<?php echo $username; ?>" autocomplete="off">
         <label for="world">World:</label>
-        <input type="text" id="world" name="world" value="<?php echo $playerWorld; ?>">
+        <input type="text" id="world" name="world" value="<?php echo $playerWorld; ?>" autocomplete="off">
         <button type="submit">Go to World</button>
     </form>
 
-    <form method="post">
-        <button name="action" value="none">None</button>
-        <button name="action" value="grass">Grass</button>
-        <button name="action" value="water">Water</button>
-        <button name="action" value="stone">Stone</button>
-        <button name="action" value="dirt">Dirt</button>
+    <form id="block-form" method="post">
+        <button type="button" name="action" value="none">None</button>
+        <button type="button" name="action" value="grass">Grass</button>
+        <button type="button" name="action" value="water">Water</button>
+        <button type="button" name="action" value="stone">Stone</button>
+        <button type="button" name="action" value="dirt">Dirt</button>
     </form>
+
     <h2>World Around You:</h2>
     <table>
         <?php
@@ -181,6 +142,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="tools/worldphoto2.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
         <li><a href="tools/worldphoto2.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
     </ul>
+    <script>
+        document.addEventListener('keydown', function (event) {
+            let action;
+            if (event.keyCode === 37) action = 'left';
+            if (event.keyCode === 38) action = 'up';
+            if (event.keyCode === 39) action = 'right';
+            if (event.keyCode === 40) action = 'down';
+
+            if (action) {
+                handleAction(action);
+            }
+        });
+
+        // Button click event listeners
+        document.querySelectorAll('#block-form button').forEach(button => {
+            button.addEventListener('click', function (event) {
+                const action = event.target.value;
+                console.log('Button clicked: ', action);
+                handleAction(action, true);
+                document.querySelector('h2').textContent = 'Selected Block: ' + action;
+            });
+        });
+
+        function handleAction(action, isBlockChange = false) {
+            console.log("Handling action: ", action);
+            const form = new FormData();
+            form.append('action', action);
+            fetch('', {
+                method: 'POST',
+                body: form
+            }).then(() => {
+                console.log("Fetch complete for action: ", action);
+                if (!isBlockChange) {
+                    console.log("Fetching updated coordinates");
+                    fetch('?getCoords=true')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Updated coordinates received: ", data);
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const username = urlParams.get('username') || 'defaultUser';
+                            const world = urlParams.get('world') || 'defaultWorld';
+                            const newURL = `?username=${username}&world=${world}&x=${data.x}&y=${data.y}`;
+                            console.log("Updating URL to: ", newURL);
+                            window.location.href = newURL;
+                        });
+                } else {
+                    console.log("Not fetching updated coordinates because isBlockChange is true");
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
