@@ -89,11 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="grid-container">
         <div class="grid-item1">
             <h3>Instructions:</h3>
-            <ul>
+            <ol>
                 <li>Use the arrow keys to move around the world.</li>
                 <li>Click on a block type to select it. (This also places block at player location)</li>
                 <li>You will keep placing selected block as you move until you change it.</li>
-            </ul>
+            </ol>
             <h3>Tools</h3>
             <ul>
                 <li><a href="tools/worldphoto.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
@@ -145,14 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <pre>Coordinates: <?php echo $_SESSION['x'] . ', ' . $_SESSION['y']; ?> Selected Block: <?php echo $_SESSION['selected']; ?></pre>
         </div>
         <div class="grid-item3">
-            <h3>Legend:</h3>
-            <ul>
-                <li>Grass: <span style="color:green;">🌱</span></li>
-                <li>Water: <span style="color:blue;">🌊</span></li>
-                <li>Stone: <span style="color:gray;">⛰️</span></li>
-                <li>Dirt: <span style="color:brown;">🌄</span></li>
-                <li>Player: <span style="color:yellowgreen;">😼</span></li>
-            </ul>
+            <?php include 'legend.php'; ?>
         </div>
     </div>
     <script>
