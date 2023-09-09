@@ -1,1 +1,1 @@
-{"world":"defaultWorld","x":2,"y":20,"emoji":"\ud83d\udc7e"}
+{"world":"defaultWorld","x":2,"y":20,"emoji":"\ud83d\udc2f"}

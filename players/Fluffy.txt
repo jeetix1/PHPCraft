@@ -1,1 +1,1 @@
-{"world":"gwagwa","x":1,"y":-2}
+{"world":"gwagwa","x":15,"y":20,"emoji":"\ud83d\udc2f"}
