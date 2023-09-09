@@ -41,7 +41,11 @@ pre {
     animation: pulse 2s infinite;
 }
 
-
+/* Input fields */
+#username,
+#world {
+    width: 100px;
+}
 
 .grid-container {
     display: grid;

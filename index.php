@@ -11,7 +11,7 @@ $playerFile = "players/{$username}.txt";
 
 // Initialize or read player data
 if (!file_exists($playerFile)) {
-    $playerData = ['world' => 'world', 'x' => 0, 'y' => 0];
+    $playerData = ['world' => 'world', 'x' => 0, 'y' => 0, 'emoji' => '😼'];
     file_put_contents($playerFile, json_encode($playerData));
 } else {
     $playerData = json_decode(file_get_contents($playerFile), true);
@@ -46,6 +46,11 @@ if (!file_exists($file)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'];
+    if (isset($_POST['emoji'])) {
+        $newEmoji = $_POST['emoji'];
+        $playerData['emoji'] = $newEmoji;
+        file_put_contents($playerFile, json_encode($playerData));
+    }
 
     if ($action === 'left')
         $_SESSION['x']--;
@@ -105,24 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="grid-item2">
             <h1>Welcome to PHPCraft 2D!</h1>
             <pre>Move around with arrow keys. No fancy controllers required.<br>Place blocks like grass, water, stone, and dirt. You're basically a god.</pre>
-            <h2>World Around You:</h2>
-            <form method="get">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="<?php echo $username; ?>" autocomplete="off">
-                <label for="world">World:</label>
-                <input type="text" id="world" name="world" value="<?php echo $playerWorld; ?>" autocomplete="off">
-                <button type="submit">Go to World</button>
-            </form>
-            <form id="block-form" method="post">
-                <button type="button" name="action" value="none">None</button>
-                <button type="button" name="action" value="grass">Grass</button>
-                <button type="button" name="action" value="water">Water</button>
-                <button type="button" name="action" value="stone">Stone</button>
-                <button type="button" name="action" value="dirt">Dirt</button>
-            </form>
+            <?php include 'controls.php'; ?>
             <div class="grid-item2-table">
                 <table>
                     <?php
+                    $emoji = $playerData['emoji'];
                     $colors = ['grass' => 'green', 'water' => 'blue', 'stone' => 'gray', 'dirt' => 'brown', 'void' => 'black'];
                     for ($i = $_SESSION['y'] - 10; $i <= $_SESSION['y'] + 10; $i++) {
                         echo "<tr>";
@@ -132,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             if ($i === $_SESSION['y'] && $j === $_SESSION['x']) {
                                 $additionalClass = ' pulsing';
-                                echo "<td class='$additionalClass' style='width:30px;height:30px;background-color:$color;'>😼</td>";
+                                echo "<td class='$additionalClass' style='width:30px;height:30px;background-color:$color;'>$emoji</td>";
                             } else {
                                 echo "<td style='width:30px;height:30px;background-color:$color;'></td>";
                             }
@@ -168,6 +160,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 console.log('Button clicked: ', action);
                 handleAction(action, true);
                 document.querySelector('h2').textContent = 'Selected Block: ' + action;
+            });
+        });
+
+        document.getElementById('emoji').addEventListener('change', function () {
+            const newEmoji = this.value;
+            const form = new FormData();
+            form.append('emoji', newEmoji);
+            fetch('', {
+                method: 'POST',
+                body: form
+            }).then(() => {
+                console.log("Emoji changed to: ", newEmoji);
             });
         });
 
