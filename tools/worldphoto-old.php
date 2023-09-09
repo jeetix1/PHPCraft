@@ -1,13 +1,6 @@
 <?php
 // Read the world from the world.txt file
-
-// Read username and world name from URL parameters
-$username = isset($_GET['username']) ? $_GET['username'] : 'defaultUser';
-$world = isset($_GET['world']) ? $_GET['world'] : 'defaultWorld';
-
-// Update file path to read from the new directory
-$file = "../worlds/{$world}.txt";
-
+$file = 'world.txt';
 if (!file_exists($file)) {
     die("world.txt file does not exist");
 }

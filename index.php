@@ -178,6 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <ul>
         <li><a href="tools/worldphoto.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
         <li><a href="tools/worldphoto.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
+        <li><a href="tools/worldphoto2.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
+        <li><a href="tools/worldphoto2.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
     </ul>
 </body>
 
