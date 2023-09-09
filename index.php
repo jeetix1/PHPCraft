@@ -72,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     file_put_contents($playerFile, json_encode($playerData));
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -82,90 +81,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('h2').textContent = 'Selected Block: <?php echo $_SESSION['selected']; ?>';
-
         });
     </script>
 </head>
-<!-- Insert grid 3 columns -->
+
 <body>
     <div class="grid-container">
+        <div class="grid-item1">
+            <h3>Instructions:</h3>
+            <ul>
+                <li>Use the arrow keys to move around the world.</li>
+                <li>Click on a block type to select it.</li>
+                <li>Click on a block in the world to place the selected block. You will keep placing selected block as you move until you cnage it.</li>
+            </ul>
+            <h3>Tools</h3>
+            <ul>
+                <li><a href="tools/worldphoto.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
+                <li><a href="tools/worldphoto.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
+                <li><a href="tools/worldphoto2.php?world=<?php echo $playerWorld; ?>">World Photo</a> (Experimental)</li>
+                <li><a href="tools/worldphoto2.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a> (Experimental)</li>
+            </ul>
+        </div>
+        <div class="grid-item2">
+            <h1>Welcome to PHPCraft 2D!</h1>
+            <pre>Move around with arrow keys. No fancy controllers required.<br>Place blocks like grass, water, stone, and dirt. You're basically a god.</pre>
+            <h2>World Around You:</h2>
+            <form method="get">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="<?php echo $username; ?>" autocomplete="off">
+                <label for="world">World:</label>
+                <input type="text" id="world" name="world" value="<?php echo $playerWorld; ?>" autocomplete="off">
+                <button type="submit">Go to World</button>
+            </form>
+            <form id="block-form" method="post">
+                <button type="button" name="action" value="none">None</button>
+                <button type="button" name="action" value="grass">Grass</button>
+                <button type="button" name="action" value="water">Water</button>
+                <button type="button" name="action" value="stone">Stone</button>
+                <button type="button" name="action" value="dirt">Dirt</button>
+            </form>
+            <div class="grid-item2-table">
+                <table>
+                    <?php
+                    $colors = ['grass' => 'green', 'water' => 'blue', 'stone' => 'gray', 'dirt' => 'brown', 'void' => 'black'];
+                    for ($i = $_SESSION['y'] - 10; $i <= $_SESSION['y'] + 10; $i++) {
+                        echo "<tr>";
+                        for ($j = $_SESSION['x'] - 10; $j <= $_SESSION['x'] + 10; $j++) {
+                            $cell = $world[$i + 10][$j + 10] ?? 'void';
+                            $color = $colors[$cell];
 
-    <div class="grid-item1">
-    <h3>Instructions:</h3>
-    <ul>
-        <li>Use the arrow keys to move around the world.</li>
-        <li>Click on a block type to select it.</li>
-        <li>Click on a block in the world to place the selected block. You will keep placing selected block as you move until you cnage it.</li>
-    </ul>
-    <h3>Tools</h3>
-    <ul>
-        <li><a href="tools/worldphoto.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
-        <li><a href="tools/worldphoto.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
-        <li><a href="tools/worldphoto2.php?world=<?php echo $playerWorld; ?>">World Photo</a></li>
-        <li><a href="tools/worldphoto2.php?username=<?php echo $username; ?>&world=<?php echo $playerWorld; ?>">Your World Photo</a></li>
-    </ul>
+                            if ($i === $_SESSION['y'] && $j === $_SESSION['x']) {
+                                $additionalClass = ' pulsing';
+                                echo "<td class='$additionalClass' style='width:30px;height:30px;background-color:$color;'>😼</td>";
+                            } else {
+                                echo "<td style='width:30px;height:30px;background-color:$color;'></td>";
+                            }
+                        }
+                        echo "</tr>";
+                    }
+                    ?>
+                </table>
+            </div>
+            <pre>Coordinates: <?php echo $_SESSION['x'] . ', ' . $_SESSION['y']; ?> Selected Block: <?php echo $_SESSION['selected']; ?></pre>
+        </div>
+        <div class="grid-item3">
+            <h3>Legend:</h3>
+            <ul>
+                <li>Grass: <span style="color:green;">🌱</span></li>
+                <li>Water: <span style="color:blue;">🌊</span></li>
+                <li>Stone: <span style="color:gray;">⛰️</span></li>
+                <li>Dirt: <span style="color:brown;">🌄</span></li>
+                <li>Player: <span style="color:yellowgreen;">😼</span></li>
+            </ul>
+        </div>
     </div>
-
-    <div class="grid-item2">
-<h1>Welcome to PHPCraft 2D!</h1>
-    <pre>Move around with arrow keys. No fancy controllers required.<br>Place blocks like grass, water, stone, and dirt. You're basically a god.</pre>
-    <h2>World Around You:</h2>
-    <form method="get">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="<?php echo $username; ?>" autocomplete="off">
-        <label for="world">World:</label>
-        <input type="text" id="world" name="world" value="<?php echo $playerWorld; ?>" autocomplete="off">
-        <button type="submit">Go to World</button>
-    </form>
-
-    <form id="block-form" method="post">
-        <button type="button" name="action" value="none">None</button>
-        <button type="button" name="action" value="grass">Grass</button>
-        <button type="button" name="action" value="water">Water</button>
-        <button type="button" name="action" value="stone">Stone</button>
-        <button type="button" name="action" value="dirt">Dirt</button>
-    </form>
-    <div class="grid-item2-table">
-    <table>
-        <?php
-        $colors = ['grass' => 'green', 'water' => 'blue', 'stone' => 'gray', 'dirt' => 'brown', 'void' => 'black'];
-        for ($i = $_SESSION['y'] - 10; $i <= $_SESSION['y'] + 10; $i++) {
-            echo "<tr>";
-            for ($j = $_SESSION['x'] - 10; $j <= $_SESSION['x'] + 10; $j++) {
-                $cell = $world[$i + 10][$j + 10] ?? 'void';
-                $color = $colors[$cell];
-
-                if ($i === $_SESSION['y'] && $j === $_SESSION['x']) {
-                    $additionalClass = ' pulsing';
-                    echo "<td class='$additionalClass' style='width:30px;height:30px;background-color:$color;'>😼</td>";
-                } else {
-                    echo "<td style='width:30px;height:30px;background-color:$color;'></td>";
-                }
-            }
-            echo "</tr>";
-        }
-        ?>
-    </table>
-    </div>
-    <pre>Coordinates: <?php echo $_SESSION['x'] . ', ' . $_SESSION['y']; ?> Selected Block: <?php echo $_SESSION['selected']; ?></pre>
-    
-    
-    </div>
-
-    <div class="grid-item3">
-    <h3>Legend:</h3>
-    <ul>
-        <li>Grass: <span style="color:green;">🌱</span></li>
-        <li>Water: <span style="color:blue;">🌊</span></li>
-        <li>Stone: <span style="color:gray;">⛰️</span></li>
-        <li>Dirt: <span style="color:brown;">🌄</span></li>
-        <li>Player: <span style="color:yellowgreen;">😼</span></li>
-    </ul>
-    </div>
-</div>
-
-
-    
     <script>
         document.addEventListener('keydown', function (event) {
             let action;
