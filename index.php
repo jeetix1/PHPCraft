@@ -75,7 +75,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $playerData['x'] = $_SESSION['x'];
     $playerData['y'] = $_SESSION['y'];
     file_put_contents($playerFile, json_encode($playerData));
+
 }
+// Initialize an empty array to hold other players' data
+    $otherPlayers = [];
+
+    // Scan the players directory
+    foreach (glob("players/*.txt") as $file) {
+        $otherPlayerData = json_decode(file_get_contents($file), true);
+
+        // Check if the other player is in the same world
+        if ($otherPlayerData['world'] === $playerWorld && $file !== $playerFile) {
+            $otherPlayers[] = $otherPlayerData;
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -108,7 +121,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $cell = $world[$i + 10][$j + 10] ?? 'void';
                             $color = $colors[$cell];
 
-                            if ($i === $_SESSION['y'] && $j === $_SESSION['x']) {
+                            $isPlayer = false;
+
+                            // Check if any other player is at this coordinate
+                            foreach ($otherPlayers as $otherPlayer) {
+                                if ($otherPlayer['x'] === $j && $otherPlayer['y'] === $i) {
+                                    $isPlayer = true;
+                                    $playerEmoji = $otherPlayer['emoji'];
+                                    break;
+                                }
+                            }
+
+                            if ($isPlayer) {
+                                echo "<td style='width:30px;height:30px;background-color:$color;'>$playerEmoji</td>";
+                            } elseif ($i === $_SESSION['y'] && $j === $_SESSION['x']) {
                                 $additionalClass = ' pulsing';
                                 echo "<td class='$additionalClass' style='width:30px;height:30px;background-color:$color;'>$emoji</td>";
                             } else {
