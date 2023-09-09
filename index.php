@@ -79,7 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>PHPCraft 2D!</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('h2').textContent = 'Selected Block: <?php echo $_SESSION['selected']; ?>';
 
+        });
+    </script>
 </head>
 
 <body>
@@ -166,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         });
 
-        function handleAction(action, isBlockChange = false) {
+        function handleAction(action) {
             console.log("Handling action: ", action);
             const form = new FormData();
             form.append('action', action);
@@ -175,22 +180,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 body: form
             }).then(() => {
                 console.log("Fetch complete for action: ", action);
-                if (!isBlockChange) {
-                    console.log("Fetching updated coordinates");
-                    fetch('?getCoords=true')
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log("Updated coordinates received: ", data);
-                            const urlParams = new URLSearchParams(window.location.search);
-                            const username = urlParams.get('username') || 'defaultUser';
-                            const world = urlParams.get('world') || 'defaultWorld';
-                            const newURL = `?username=${username}&world=${world}&x=${data.x}&y=${data.y}`;
-                            console.log("Updating URL to: ", newURL);
-                            window.location.href = newURL;
-                        });
-                } else {
-                    console.log("Not fetching updated coordinates because isBlockChange is true");
-                }
+                // Always fetch updated coordinates
+                fetch('?getCoords=true')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Updated coordinates received: ", data);
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const username = urlParams.get('username') || 'defaultUser';
+                        const world = urlParams.get('world') || 'defaultWorld';
+                        const newURL = `?username=${username}&world=${world}&x=${data.x}&y=${data.y}`;
+                        console.log("Updating URL to: ", newURL);
+                        window.location.href = newURL;
+                    });
             });
         }
     </script>
