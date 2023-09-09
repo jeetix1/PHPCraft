@@ -1,1 +1,1 @@
-{"world":"defaultWorld","x":-11,"y":3}
+{"world":"defaultWorld","x":-17,"y":19}
